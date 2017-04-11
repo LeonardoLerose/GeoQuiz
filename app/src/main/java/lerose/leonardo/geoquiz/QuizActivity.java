@@ -12,10 +12,11 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
     private Button mTrueButton;
     private Button mFalseButton;
-    private ImageButton mNextButton;
-    private ImageButton mPreviousButton;
+    private Button mNextButton;
+    private Button mPreviousButton;
     private TextView mQuestionTextView;
 
     private Question[] mQuestionBank = new Question[]{
@@ -25,7 +26,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_americas, true),
             new Question(R.string.question_asia, true),
     };
-    private int mCurrentIndex;
+    private int mCurrentIndex = 0;
 
     private void updateQuestion(){
         mQuestionTextView.setText(mQuestionBank[mCurrentIndex].getTextResId());
@@ -43,12 +44,12 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
-
+        if(savedInstanceState != null) mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         mTrueButton = (Button) findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-        mNextButton = (ImageButton) findViewById(R.id.next_button);
-        mPreviousButton = (ImageButton) findViewById(R.id.previous_button);
+        mNextButton = (Button) findViewById(R.id.next_button);
+        mPreviousButton = (Button) findViewById(R.id.previous_button);
 
         mQuestionTextView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -94,33 +95,49 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart(){
+    protected void onStart(){
         super.onStart();
         Log.d(TAG, "onStart() called");
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
+    protected void onPause(){
         Log.d(TAG, "onPause() called");
+        super.onPause();
     }
 
     @Override
-    public void onResume(){
-        super.onPause();
+    protected void onResume(){
+        super.onResume();
         Log.d(TAG, "onResume() called");
     }
 
     @Override
-    public void onStop(){
-        super.onStop();
+    protected void onStop(){
         Log.d(TAG, "onStop() called");
+        super.onStop();
     }
 
     @Override
-    public void onDestroy(){
-        super.onDestroy();
+    protected void onDestroy(){
         Log.d(TAG,"onDestroy() called");
+        super.onDestroy();
+    }
+    @Override
+    protected void onRestart(){
+        Log.d(TAG, "onRestart() called");
+        super.onRestart();
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        Log.d(TAG, "onSaveInstanceState() called");
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        Log.d(TAG, "onRestoreInstanceState() called");
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
 
